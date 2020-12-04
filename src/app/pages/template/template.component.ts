@@ -21,15 +21,18 @@ export class TemplateComponent implements OnInit {
   
   constructor(private paisService: PaisService) { }
 
-
+  
 
   ngOnInit(): void {
+    
     this.paisService.getPaises()
       .subscribe(data =>{
         this.paises  = data;
         this.paises.unshift({nombre: 'Seleccione un pais', codigo: ''});
       })
   }
+
+  
 
   guardar(forma :NgForm){
     if(forma.valid){

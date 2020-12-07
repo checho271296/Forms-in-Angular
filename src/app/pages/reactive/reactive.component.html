@@ -5,27 +5,45 @@
     <div>
 
         <div class="form-group row">
-            <label class="col-2 col-form-label">Nombre</label>
+            <label class="col-2 col-form-label">Name</label>
             <div class="col-8">
-                <input class="form-control" type="text" placeholder="Nombre" formControlName="name">
+                <input class="form-control" type="text" placeholder="Name" formControlName="name" [class.is-invalid]="noValidName" [class.is-valid]="validName">
+                <small *ngIf="noValidName" class="text-danger">A least 5 letters</small>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="col-2 col-form-label">Apellido</label>
+            <label class="col-2 col-form-label">Lastname</label>
             <div class="col-8">
-
-                <input class="form-control" type="text" placeholder="Apellido" formControlName="lastname">
+                <input class="form-control" type="text" placeholder="Lastname" formControlName="lastname" [class.is-invalid]="noValidLastname" [class.is-valid]="validLastname">
+                <small *ngIf="noValidLastname" class="text-danger">A least 5 letters</small>
             </div>
         </div>
 
     </div>
 
     <div class="form-group row">
-        <label class="col-2 col-form-label">Correo</label>
+        <label class="col-2 col-form-label">Email</label>
         <div class="col-8">
+            <input class="form-control" type="email" placeholder="Email" formControlName="mail" [class.is-invalid]="noValidMail" [class.is-valid]="validMail">
+            <small *ngIf="noValidMail" class="text-danger">No valid email</small>
+        </div>
+    </div>
+    <div formGroupName="address">
+        <div class="form-group row">
+            <label class="col-2 col-form-label">State</label>
+            <div class="col-8">
+                <input class="form-control" type="text" placeholder="State" formControlName="state" [class.is-invalid]="noValidState" [class.is-valid]="validState">
+                <small *ngIf="noValidState" class="text-danger">Required field</small>
+            </div>
+        </div>
 
-            <input class="form-control" type="email" placeholder="Correo electrónico" formControlName="mail">
+        <div class="form-group row">
+            <label class="col-2 col-form-label">City</label>
+            <div class="col-8">
+                <input class="form-control" type="text" placeholder="City" formControlName="city" [class.is-invalid]="noValidCity" [class.is-valid]="validCity">
+                <small *ngIf="noValidCity" class="text-danger">Required field</small>
+            </div>
         </div>
     </div>
 

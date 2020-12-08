@@ -46,6 +46,30 @@
             </div>
         </div>
     </div>
+    <div class=" row mt-5">
+        <div class="col">
+            <table class="table">
+                <thead class="thead-dark">
+                    <th>ID</th>
+                    <th>Hobbie</th>
+                    <th>Delete</th>
+                </thead>
+                <tbody formArrayName="hobbies">
+                    <tr *ngFor="let control of getHobbies.controls; let i = index;">
+
+                        <td>{{i+1}}</td>
+                        <td>
+                            <input type="text" class="form-control" [formControlName]="i">
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger" (click)="deleteHobbie(i);">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-primary mt-3 mb-5" (click)="addHobbie();"> + Add hobbie</button>
+        </div>
+    </div>
 
 
 

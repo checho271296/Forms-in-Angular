@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ValidatorsService } from '../../services/validators.service';
 
 @Component({
   selector: 'app-reactive',
@@ -12,9 +13,9 @@ export class ReactiveComponent implements OnInit {
 
   forma : FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private validatorsService: ValidatorsService) {
     this.createForm();
-    this.loadDataToForm();
+    // this.loadDataToForm();
    }
 
   ngOnInit(): void {
@@ -58,21 +59,26 @@ export class ReactiveComponent implements OnInit {
     return this.forma.get('address.city').valid ;
   }
 
+  get getHobbies(){
+      return this.forma.get('hobbies') as FormArray;
+  }
+
   createForm(){
 
     this.forma = this.formBuilder.group({
       name  : ['',[Validators.required,Validators.minLength(5)]],
-      lastname: ['',[Validators.required,Validators.minLength(5)]],
+      lastname: ['',[Validators.required,Validators.minLength(5),this.validatorsService.noLastName]],
       mail  : ['',[Validators.required,Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")]],
       address: this.formBuilder.group({
         state: ['',Validators.required],
         city: ['',Validators.required]
-      })
+      }),
+      hobbies: this.formBuilder.array([])
     });
   }
 
   loadDataToForm(){
-    this.forma.setValue({
+    this.forma.reset({
       name: "Sergio",
       lastname: "Fonseca",
       mail: "sergio@gmail.com",
@@ -81,6 +87,8 @@ export class ReactiveComponent implements OnInit {
         city: "Cartago"
       }
     });
+
+    ['Comer','Dormir'].forEach(valor => this.getHobbies.push(this.formBuilder.control(valor)));
   }
 
   save(){
@@ -98,6 +106,14 @@ export class ReactiveComponent implements OnInit {
     };
 
     this.forma.reset();
+  }
+
+  addHobbie(){
+    this.getHobbies.push(this.formBuilder.control(''));
+  }
+
+  deleteHobbie(index:number){
+    this.getHobbies.removeAt(index);
   }
 
 }

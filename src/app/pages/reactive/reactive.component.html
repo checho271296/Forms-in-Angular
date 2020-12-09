@@ -29,6 +29,27 @@
             <small *ngIf="noValidMail" class="text-danger">No valid email</small>
         </div>
     </div>
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Username</label>
+        <div class="col-8">
+            <input class="form-control" type="text" placeholder="Username" formControlName="user" [class.is-invalid]="noValidUser" [class.is-valid]="validUser">
+            <small *ngIf="noValidUser" class="text-danger">User not valid</small>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Password</label>
+        <div class="col-8">
+            <input class="form-control" type="password" placeholder="Password" formControlName="pass1" [class.is-invalid]="noPass1Valid" [class.is-valid]="validPass1">
+            <small *ngIf="noPass1Valid" class="text-danger">No valid password</small>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Confirm password</label>
+        <div class="col-8">
+            <input class="form-control" type="password" placeholder="Confirm password" formControlName="pass2" [class.is-invalid]="noPass2Valid">
+            <small *ngIf="noPass2Valid" class="text-danger">Passwords do not match </small>
+        </div>
+    </div>
     <div formGroupName="address">
         <div class="form-group row">
             <label class="col-2 col-form-label">State</label>

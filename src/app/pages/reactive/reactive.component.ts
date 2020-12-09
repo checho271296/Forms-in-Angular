@@ -15,7 +15,8 @@ export class ReactiveComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private validatorsService: ValidatorsService) {
     this.createForm();
-    // this.loadDataToForm();
+    this.loadDataToForm();
+    this.createListeners();
    }
 
   ngOnInit(): void {
@@ -40,6 +41,20 @@ export class ReactiveComponent implements OnInit {
   get noValidCity():Boolean{
     return this.forma.get('address.city').invalid &&  this.forma.get('address.city').touched;
   }
+  get noPass1Valid():Boolean{
+    return this.forma.get('pass1').invalid &&  this.forma.get('pass1').touched;
+  }
+  get noValidUser():Boolean{
+    return this.forma.get('user').invalid &&  this.forma.get('user').touched;
+  }
+
+  get noPass2Valid():Boolean{
+    const pass1 = this.forma.get('pass1').value;
+    const pass2 = this.forma.get('pass2').value;
+    
+    return (pass1 === pass2) ? false : true;
+
+  }
 
   get validName():Boolean{
     return this.forma.get('name').valid; 
@@ -58,7 +73,15 @@ export class ReactiveComponent implements OnInit {
   get validCity():Boolean{
     return this.forma.get('address.city').valid ;
   }
+  get validUser():Boolean{
+    return this.forma.get('user').valid ;
+  }
 
+  get validPass1():Boolean{
+    return this.forma.get('pass1').valid ;
+  }
+
+  
   get getHobbies(){
       return this.forma.get('hobbies') as FormArray;
   }
@@ -67,14 +90,34 @@ export class ReactiveComponent implements OnInit {
 
     this.forma = this.formBuilder.group({
       name  : ['',[Validators.required,Validators.minLength(5)]],
+      user  : ['',[Validators.required,Validators.minLength(5)],this.validatorsService.userExist],
       lastname: ['',[Validators.required,Validators.minLength(5),this.validatorsService.noLastName]],
       mail  : ['',[Validators.required,Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")]],
+      pass1  : ['',[Validators.required,Validators.minLength(8)]],
+      pass2  : ['',[Validators.required]],
       address: this.formBuilder.group({
         state: ['',Validators.required],
         city: ['',Validators.required]
       }),
       hobbies: this.formBuilder.array([])
+    },{
+      validators: this.validatorsService.equalPasswords('pass1','pass2')
     });
+  }
+
+  createListeners(){
+    //the form changed
+    this.forma.valueChanges.subscribe(value =>{
+      console.log(value);
+    });
+    // status changed
+    this.forma.statusChanges.subscribe(status =>{
+      console.log(status);
+    });
+    //Specific value change
+    this.forma.get('name').valueChanges.subscribe(console.log);
+
+
   }
 
   loadDataToForm(){
@@ -82,6 +125,8 @@ export class ReactiveComponent implements OnInit {
       name: "Sergio",
       lastname: "Fonseca",
       mail: "sergio@gmail.com",
+      pass1: '12345678',
+      pass2: '12345678',
       address: {
         state: "San Juan",
         city: "Cartago"
